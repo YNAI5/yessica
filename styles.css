@@ -338,12 +338,255 @@ body.night-mode .stars {
         font-size: 1.8rem;
     }
 
-    .container {
-        padding: 30px 15px;
+    transition: transform 0.4s ease;
+}
+
+.photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.photo-frame:hover {
+    transform: scale(1.05) rotate(2deg);
+}
+
+.photo-caption h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.4rem;
+    color: var(--accent-day);
+}
+
+.photo-caption p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    opacity: 0.9;
+}
+
+/* Teddy Bear */
+.bear-container {
+    width: 240px;
+    /* Larger */
+    height: 240px;
+    position: relative;
+    margin: 10px 0;
+}
+
+.bear {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.15));
+    /* Soft glow/shadow */
+}
+
+/* Quote Section */
+.quote-box {
+    text-align: center;
+}
+
+.quote-text {
+    font-size: 1.1rem;
+    font-style: italic;
+    margin-bottom: 20px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn {
+    background: var(--accent-day);
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 126, 179, 0.4);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 126, 179, 0.6);
+}
+
+.btn:active {
+    transform: scale(0.96);
+}
+
+.quote-history {
+    margin-top: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    padding-top: 15px;
+    font-size: 0.85rem;
+    opacity: 0.7;
+    text-align: left;
+}
+
+.quote-history-item {
+    margin-bottom: 6px;
+    padding-left: 10px;
+    border-left: 2px solid var(--accent-day);
+}
+
+/* Footer */
+footer {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    margin-top: 20px;
+    padding-bottom: 20px;
+}
+
+/* Music Player */
+.music-player {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+.music-btn {
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    backdrop-filter: blur(8px);
+    transition: all 0.3s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.music-btn:hover {
+    background: white;
+    transform: scale(1.1);
+}
+
+/* Background Elements */
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+body.night-mode .stars {
+    opacity: 1;
+}
+
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--duration) infinite ease-in-out;
+}
+
+@keyframes twinkle {
+
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: scale(0.8);
     }
 
-    .bear-container {
-        width: 200px;
-        height: 200px;
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+/* Heart Trail */
+.heart-trail {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    font-size: 20px;
+    animation: floatFade 1s ease-out forwards;
+}
+
+@keyframes floatFade {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translate(-50%, -100px) scale(1.2);
+        opacity: 0;
+    }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s ease;
+}
+
+.sound-modal {
+    background: var(--card-bg-day);
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border: 2px solid white;
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.sound-modal p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: var(--text-day);
+    font-weight: 600;
+}
+
+#enable-sound-btn {
+    background: var(--accent-day);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+    box-shadow: 0 5px 15px rgba(255, 95, 162, 0.4);
+}
+
+#enable-sound-btn:hover {
+    transform: scale(1.05);
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
     }
 }

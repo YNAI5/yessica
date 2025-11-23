@@ -195,7 +195,35 @@ function generateStars() {
 
 // Audio Player Setup
 const audioPlayer = document.getElementById('bg-music');
+const soundOverlay = document.getElementById('sound-overlay');
+const enableSoundBtn = document.getElementById('enable-sound-btn');
 let isPlaying = false;
+
+// Try to play automatically (muted)
+window.addEventListener('load', () => {
+    audioPlayer.play().then(() => {
+        isPlaying = true;
+    }).catch(() => {
+        isPlaying = false;
+    });
+});
+
+// Handle "Enable Sound" click
+if (enableSoundBtn) {
+    enableSoundBtn.addEventListener('click', () => {
+        audioPlayer.muted = false;
+        audioPlayer.volume = 0.5; // Start at 50% volume
+        audioPlayer.play().then(() => {
+            isPlaying = true;
+            musicIcon.textContent = '🔊';
+            // Fade out overlay
+            soundOverlay.style.opacity = '0';
+            setTimeout(() => {
+                soundOverlay.remove();
+            }, 500);
+        }).catch(e => console.log("Audio play failed:", e));
+    });
+}
 
 musicBtn.addEventListener('click', toggleMusic);
 
@@ -204,7 +232,7 @@ function toggleMusic() {
         audioPlayer.pause();
         musicIcon.textContent = '🔇';
     } else {
-        audioPlayer.play().catch(e => console.log("Audio play failed:", e));
+        audioPlayer.play();
         musicIcon.textContent = '🔊';
     }
     isPlaying = !isPlaying;
