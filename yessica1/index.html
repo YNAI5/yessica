@@ -1,82 +1,111 @@
-<p class="sub-subtitle">Dos meses de llamadas, risas y charlas nocturnas 💫</p>
-</header>
+<!DOCTYPE html>
+<html lang="es" translate="no">
 
-<div class="card photo-card">
-    <div class="photo-frame">
-        <img src="assets/us.jpg" alt="Nosotros">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>Para Yessica ❤️</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="stars"></div>
+
+    <div class="music-player">
+        <button id="music-btn" class="music-btn" aria-label="Toggle Music">
+            <span>🔇</span>
+        </button>
+        <audio id="bg-music" loop>
+            <source src="assets/music.mp3" type="audio/mpeg">
+        </audio>
     </div>
-    <div class="photo-caption">
-        <h3>Yessica</h3>
-        <p>Tu hermosa sonrisa y tus ojos alegran cada mañana.</p>
+
+    <div class="container">
+        <header>
+            <h1 class="title"><span id="greeting">Buenos días</span>, <span class="highlight-name">Yessica</span></h1>
+            <p class="subtitle">Feliz 2 meses ❤️</p>
+            <p class="sub-subtitle">Dos meses de llamadas, risas y charlas nocturnas 💫</p>
+        </header>
+
+        <div class="card photo-card">
+            <div class="photo-frame">
+                <img src="assets/us.jpg" alt="Nosotros">
+            </div>
+            <div class="photo-caption">
+                <h3>Yessica</h3>
+                <p>Tu hermosa sonrisa y tus ojos alegran cada mañana.</p>
+            </div>
+        </div>
+
+        <div class="bear-container">
+            <!-- Teddy Bear SVG -->
+            <svg class="bear" viewBox="0 0 300 300">
+                <defs>
+                    <radialGradient id="fur" cx="50%" cy="40%" r="70%">
+                        <stop offset="0%" stop-color="#ffd6e7" />
+                        <stop offset="100%" stop-color="#ffc0da" />
+                    </radialGradient>
+                    <radialGradient id="ear" cx="50%" cy="50%" r="70%">
+                        <stop offset="0%" stop-color="#ffe9f3" />
+                        <stop offset="100%" stop-color="#ffd6e7" />
+                    </radialGradient>
+                </defs>
+
+                <!-- Ears -->
+                <circle cx="95" cy="85" r="28" fill="url(#fur)" />
+                <circle cx="205" cy="85" r="28" fill="url(#fur)" />
+                <circle cx="95" cy="85" r="16" fill="url(#ear)" />
+                <circle cx="205" cy="85" r="16" fill="url(#ear)" />
+
+                <!-- Head -->
+                <circle cx="150" cy="125" r="60" fill="url(#fur)" />
+
+                <!-- Snout -->
+                <ellipse cx="150" cy="140" rx="28" ry="20" fill="#ffeefa" />
+                <circle cx="150" cy="138" r="5" fill="#5a3344" /> <!-- Nose -->
+                <path d="M140 148 Q150 155 160 148" fill="none" stroke="#5a3344" stroke-width="3"
+                    stroke-linecap="round" />
+
+                <!-- Eyes Group -->
+                <g id="eyes">
+                    <!-- Left Eye -->
+                    <circle cx="130" cy="120" r="6" fill="#5a3344" />
+                    <circle class="pupil" cx="130" cy="120" r="2" fill="white" />
+
+                    <!-- Right Eye -->
+                    <circle cx="170" cy="120" r="6" fill="#5a3344" />
+                    <circle class="pupil" cx="170" cy="120" r="2" fill="white" />
+                </g>
+
+                <!-- Body -->
+                <ellipse cx="150" cy="205" rx="70" ry="62" fill="url(#fur)" />
+
+                <!-- Arms -->
+                <ellipse cx="95" cy="190" rx="26" ry="20" fill="url(#fur)" />
+                <ellipse cx="205" cy="190" rx="26" ry="20" fill="url(#fur)" />
+
+                <!-- Feet -->
+                <ellipse cx="115" cy="255" rx="26" ry="18" fill="url(#fur)" />
+                <ellipse cx="185" cy="255" rx="26" ry="18" fill="url(#fur)" />
+            </svg>
+        </div>
+
+        <div class="card quote-box">
+            <p id="quote-text" class="quote-text">"Presiona el botón para una notita..."</p>
+            <button id="generate-btn" class="btn">Generar una notita</button>
+            <div id="quote-history" class="quote-history"></div>
+        </div>
+
+        <footer>
+            <p>Hecho solo para ti, Yessica 💕</p>
+        </footer>
     </div>
-</div>
 
-<div class="bear-container">
-    <!-- Teddy Bear SVG -->
-    <svg class="bear" viewBox="0 0 300 300">
-        <defs>
-            <radialGradient id="fur" cx="50%" cy="40%" r="70%">
-                <stop offset="0%" stop-color="#ffd6e7" />
-                <stop offset="100%" stop-color="#ffc0da" />
-            </radialGradient>
-            <radialGradient id="ear" cx="50%" cy="50%" r="70%">
-                <stop offset="0%" stop-color="#ffe9f3" />
-                <stop offset="100%" stop-color="#ffd6e7" />
-            </radialGradient>
-        </defs>
-
-        <!-- Ears -->
-        <circle cx="95" cy="85" r="28" fill="url(#fur)" />
-        <circle cx="205" cy="85" r="28" fill="url(#fur)" />
-        <circle cx="95" cy="85" r="16" fill="url(#ear)" />
-        <circle cx="205" cy="85" r="16" fill="url(#ear)" />
-
-        <!-- Head -->
-        <circle cx="150" cy="125" r="60" fill="url(#fur)" />
-
-        <!-- Snout -->
-        <ellipse cx="150" cy="140" rx="28" ry="20" fill="#ffeefa" />
-        <circle cx="150" cy="138" r="5" fill="#5a3344" /> <!-- Nose -->
-        <path d="M140 148 Q150 155 160 148" fill="none" stroke="#5a3344" stroke-width="3" stroke-linecap="round" />
-
-        <!-- Eyes Group -->
-        <g id="eyes">
-            <!-- Left Eye -->
-            <circle cx="130" cy="120" r="6" fill="#5a3344" />
-            <circle class="pupil" cx="130" cy="120" r="2" fill="white" />
-
-            <!-- Right Eye -->
-            <circle cx="170" cy="120" r="6" fill="#5a3344" />
-            <circle class="pupil" cx="170" cy="120" r="2" fill="white" />
-        </g>
-
-        <!-- Body -->
-        <ellipse cx="150" cy="205" rx="70" ry="62" fill="url(#fur)" />
-
-        <!-- Arms -->
-        <ellipse cx="95" cy="190" rx="26" ry="20" fill="url(#fur)" />
-        <ellipse cx="205" cy="190" rx="26" ry="20" fill="url(#fur)" />
-
-        <!-- Feet -->
-        <ellipse cx="115" cy="255" rx="26" ry="18" fill="url(#fur)" />
-        <ellipse cx="185" cy="255" rx="26" ry="18" fill="url(#fur)" />
-    </svg>
-</div>
-
-<div class="card quote-box">
-    <p id="quote-text" class="quote-text">"Presiona el botón para una notita..."</p>
-    <button id="generate-btn" class="btn">Generar una notita</button>
-    <div id="quote-history" class="quote-history"></div>
-</div>
-
-<footer>
-    <p>Hecho solo para ti, Yessica 💕</p>
-</footer>
-</div>
-
-<!-- YouTube API -->
-<script src="https://www.youtube.com/iframe_api"></script>
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>
