@@ -199,43 +199,81 @@ const soundOverlay = document.getElementById('sound-overlay');
 const enableSoundBtn = document.getElementById('enable-sound-btn');
 let isPlaying = false;
 
+console.log('🎵 Audio player initialized:', audioPlayer);
+console.log('🎵 Audio source:', audioPlayer?.src);
+console.log('🎵 Audio muted:', audioPlayer?.muted);
+
 // Try to play automatically (muted)
 window.addEventListener('load', () => {
+    console.log('🎵 Attempting autoplay (muted)...');
     audioPlayer.play().then(() => {
+        console.log('✅ Autoplay successful (muted)');
         isPlaying = true;
-    }).catch(() => {
+        // Show sound overlay to let user enable sound
+        if (soundOverlay) {
+            soundOverlay.style.display = 'flex';
+            console.log('🎵 Sound overlay displayed');
+        }
+    }).catch((error) => {
+        console.error('❌ Autoplay failed:', error);
         isPlaying = false;
+        // Still show overlay for manual play
+        if (soundOverlay) {
+            soundOverlay.style.display = 'flex';
+        }
     });
 });
 
 // Handle "Enable Sound" click
 if (enableSoundBtn) {
     enableSoundBtn.addEventListener('click', () => {
+        console.log('🎵 User clicked "Enable Sound"');
         audioPlayer.muted = false;
         audioPlayer.volume = 0.5; // Start at 50% volume
+        console.log('🎵 Audio unmuted, volume set to 0.5');
         audioPlayer.play().then(() => {
+            console.log('✅ Audio playing with sound!');
             isPlaying = true;
             musicIcon.textContent = '🔊';
             // Fade out overlay
             soundOverlay.style.opacity = '0';
             setTimeout(() => {
-                soundOverlay.remove();
+                soundOverlay.style.display = 'none';
             }, 500);
-        }).catch(e => console.log("Audio play failed:", e));
+        }).catch(e => {
+            console.error("❌ Audio play failed:", e);
+        });
     });
 }
 
 musicBtn.addEventListener('click', toggleMusic);
 
 function toggleMusic() {
-    if (isPlaying) {
-        audioPlayer.pause();
-        musicIcon.textContent = '🔇';
-    } else {
-        audioPlayer.play();
-        musicIcon.textContent = '🔊';
+    console.log('🎵 Music button clicked. Current state:', isPlaying ? 'playing' : 'paused');
+    if (!audioPlayer) {
+        console.error('❌ Audio player not found!');
+        return;
     }
-    isPlaying = !isPlaying;
+
+    if (isPlaying) {
+        console.log('🎵 Pausing audio...');
+        audioPlayer.pause();
+        if (musicIcon) musicIcon.textContent = '🔇';
+        isPlaying = false;
+    } else {
+        console.log('🎵 Playing audio...');
+        // Ensure audio is unmuted when user explicitly toggles sound on
+        audioPlayer.muted = false;
+        audioPlayer.volume = audioPlayer.volume || 0.5;
+        console.log('🎵 Volume:', audioPlayer.volume, 'Muted:', audioPlayer.muted);
+        audioPlayer.play().then(() => {
+            console.log('✅ Audio playing');
+            if (musicIcon) musicIcon.textContent = '🔊';
+            isPlaying = true;
+        }).catch(e => {
+            console.error('❌ Play failed:', e);
+        });
+    }
 }
 
 // Initialize
