@@ -100,16 +100,10 @@
             <span>🔇</span>
         </button>
 
-        <!-- Background audio (muted for autoplay compatibility) -->
-        <audio id="bg-music" src="yessica1/yogurcito.mp3.mp3" autoplay loop muted></audio>
-
-        <!-- Optional overlay to request user enable sound on some browsers -->
-        <div id="sound-overlay" class="sound-overlay" style="display:none;">
-            <div class="sound-modal">
-                <p>🎵 ¿Quieres escuchar música de fondo?</p>
-                <button id="enable-sound-btn" class="btn">Activar sonido</button>
-            </div>
-        </div>
+        <!-- Background audio -->
+        <audio id="bg-music" loop>
+            <source src="assets/music.mp3" type="audio/mpeg">
+        </audio>
     </div>
 
     <script src="script.js"></script>

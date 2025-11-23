@@ -57,8 +57,16 @@ generateBtn.addEventListener('click', (e) => {
     // Update History
     addToHistory(newQuote);
 
-    // Effects
-    createHeartExplosion(e.clientX, e.clientY);
+    // Effects - Handle both touch and click events
+    let x, y;
+    if (e.touches && e.touches[0]) {
+        x = e.touches[0].clientX;
+        y = e.touches[0].clientY;
+    } else {
+        x = e.clientX || window.innerWidth / 2;
+        y = e.clientY || window.innerHeight / 2;
+    }
+    createHeartExplosion(x, y);
 });
 
 function addToHistory(quote) {
@@ -93,7 +101,17 @@ document.addEventListener('mousemove', (e) => {
 
 document.addEventListener('touchmove', (e) => {
     const touch = e.touches[0];
+    const now = Date.now();
+    if (now - lastHeartTime > 100) {
+        createFloatingHeart(touch.clientX, touch.clientY);
+        lastHeartTime = now;
+    }
     updateBearEyes(touch.clientX, touch.clientY);
+});
+
+document.addEventListener('touchstart', (e) => {
+    const touch = e.touches[0];
+    createFloatingHeart(touch.clientX, touch.clientY);
 });
 
 document.addEventListener('click', (e) => {
@@ -195,85 +213,19 @@ function generateStars() {
 
 // Audio Player Setup
 const audioPlayer = document.getElementById('bg-music');
-const soundOverlay = document.getElementById('sound-overlay');
-const enableSoundBtn = document.getElementById('enable-sound-btn');
 let isPlaying = false;
-
-console.log('🎵 Audio player initialized:', audioPlayer);
-console.log('🎵 Audio source:', audioPlayer?.src);
-console.log('🎵 Audio muted:', audioPlayer?.muted);
-
-// Try to play automatically (muted)
-window.addEventListener('load', () => {
-    console.log('🎵 Attempting autoplay (muted)...');
-    audioPlayer.play().then(() => {
-        console.log('✅ Autoplay successful (muted)');
-        isPlaying = true;
-        // Show sound overlay to let user enable sound
-        if (soundOverlay) {
-            soundOverlay.style.display = 'flex';
-            console.log('🎵 Sound overlay displayed');
-        }
-    }).catch((error) => {
-        console.error('❌ Autoplay failed:', error);
-        isPlaying = false;
-        // Still show overlay for manual play
-        if (soundOverlay) {
-            soundOverlay.style.display = 'flex';
-        }
-    });
-});
-
-// Handle "Enable Sound" click
-if (enableSoundBtn) {
-    enableSoundBtn.addEventListener('click', () => {
-        console.log('🎵 User clicked "Enable Sound"');
-        audioPlayer.muted = false;
-        audioPlayer.volume = 0.5; // Start at 50% volume
-        console.log('🎵 Audio unmuted, volume set to 0.5');
-        audioPlayer.play().then(() => {
-            console.log('✅ Audio playing with sound!');
-            isPlaying = true;
-            musicIcon.textContent = '🔊';
-            // Fade out overlay
-            soundOverlay.style.opacity = '0';
-            setTimeout(() => {
-                soundOverlay.style.display = 'none';
-            }, 500);
-        }).catch(e => {
-            console.error("❌ Audio play failed:", e);
-        });
-    });
-}
 
 musicBtn.addEventListener('click', toggleMusic);
 
 function toggleMusic() {
-    console.log('🎵 Music button clicked. Current state:', isPlaying ? 'playing' : 'paused');
-    if (!audioPlayer) {
-        console.error('❌ Audio player not found!');
-        return;
-    }
-
     if (isPlaying) {
-        console.log('🎵 Pausing audio...');
         audioPlayer.pause();
-        if (musicIcon) musicIcon.textContent = '🔇';
-        isPlaying = false;
+        musicIcon.textContent = '🔇';
     } else {
-        console.log('🎵 Playing audio...');
-        // Ensure audio is unmuted when user explicitly toggles sound on
-        audioPlayer.muted = false;
-        audioPlayer.volume = audioPlayer.volume || 0.5;
-        console.log('🎵 Volume:', audioPlayer.volume, 'Muted:', audioPlayer.muted);
-        audioPlayer.play().then(() => {
-            console.log('✅ Audio playing');
-            if (musicIcon) musicIcon.textContent = '🔊';
-            isPlaying = true;
-        }).catch(e => {
-            console.error('❌ Play failed:', e);
-        });
+        audioPlayer.play().catch(e => console.log("Audio play failed:", e));
+        musicIcon.textContent = '🔊';
     }
+    isPlaying = !isPlaying;
 }
 
 // Initialize
