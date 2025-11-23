@@ -193,37 +193,18 @@ function generateStars() {
     }
 }
 
-// YouTube Player Setup
-let player;
+// Audio Player Setup
+const audioPlayer = document.getElementById('bg-music');
 let isPlaying = false;
 
-window.onYouTubeIframeAPIReady = function () {
-    player = new YT.Player('player', {
-        height: '0',
-        width: '0',
-        videoId: 'B7P8NMCAby8',
-        playerVars: {
-            'playsinline': 1,
-            'controls': 0,
-            'loop': 1,
-            'playlist': 'B7P8NMCAby8'
-        },
-        events: {
-            'onReady': onPlayerReady
-        }
-    });
-};
-
-function onPlayerReady(event) {
-    musicBtn.addEventListener('click', toggleMusic);
-}
+musicBtn.addEventListener('click', toggleMusic);
 
 function toggleMusic() {
     if (isPlaying) {
-        player.pauseVideo();
+        audioPlayer.pause();
         musicIcon.textContent = '🔇';
     } else {
-        player.playVideo();
+        audioPlayer.play().catch(e => console.log("Audio play failed:", e));
         musicIcon.textContent = '🔊';
     }
     isPlaying = !isPlaying;
