@@ -1,30 +1,61 @@
-// Quotes Array (Spanish - Sincere & Sweet)
+// Quotes Array (Spanish - Mix: Sweet, Inspirational, Motivational, Flirty, Spicy)
 const quotes = [
+    // Sweet romantic
     "Tu sonrisa ilumina mis mañanas más que el sol.",
     "Me encanta cómo brillan tus ojos cuando te ríes.",
     "Dos meses y ya eres mi pensamiento favorito.",
     "Gracias por cada risa y cada momento juntos.",
     "Eres la mejor parte de mi día, siempre.",
-    "Admiro tu fuerza y tu dulzura, Yessica.",
     "Cada día contigo es un nuevo motivo para sonreír.",
+    "Contigo, todo es más bonito.",
+
+    // Inspirational
+    "Admiro tu fuerza y tu dulzura, Yessica.",
+    "Eres prueba de que los sueños se hacen realidad.",
+    "Tu energía positiva me inspira cada día.",
+
+    // Motivational
     "Me haces querer ser mejor persona.",
-    "Tu felicidad es mi prioridad.",
-    "Contigo, todo es más bonito."
+    "Tu felicidad es mi prioridad y mi motivación.",
+    "Juntos podemos con todo lo que venga.",
+
+    // Cute flirty
+    "Me encanta cuando me miras así.",
+    "No puedo dejar de pensar en ti.",
+    "Eres mi distracción favorita.",
+
+    // Medium spicy
+    "Eres mi debilidad favorita.",
+    "Me vuelves loco de la mejor manera.",
+
+    // Very spicy (classy)
+    "Cada momento contigo es una tentación irresistible.",
+    "Tu presencia me desarma completamente."
 ];
 
 // DOM Elements
 const body = document.body;
 const quoteText = document.getElementById('quote-text');
 const generateBtn = document.getElementById('generate-btn');
+const shareBtn = document.getElementById('share-btn');
 const musicBtn = document.getElementById('music-btn');
 const musicIcon = musicBtn.querySelector('span');
+const volumeControl = document.getElementById('volume-control');
+const volumeSlider = document.getElementById('volume-slider');
 const pupils = document.querySelectorAll('.pupil');
 const greetingElement = document.getElementById('greeting');
 const quoteHistoryContainer = document.getElementById('quote-history');
+const dayCounterElement = document.getElementById('day-counter');
+const bearContainer = document.querySelector('.bear-container');
+const nightModeToggle = document.getElementById('night-mode-toggle');
+const autoplayIndicator = document.getElementById('autoplay-indicator');
 
 // State
 let quoteHistory = [];
 const MAX_HISTORY = 3;
+
+// Start Date (September 21, 2025)
+const START_DATE = new Date('2025-09-21');
 
 // Time-Based Greeting
 function updateGreeting() {
@@ -36,6 +67,17 @@ function updateGreeting() {
     else greeting = "Buenas noches";
 
     if (greetingElement) greetingElement.textContent = greeting;
+}
+
+// Day Counter
+function updateDayCounter() {
+    const today = new Date();
+    const diffTime = Math.abs(today - START_DATE);
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+    if (dayCounterElement) {
+        dayCounterElement.textContent = `✨ ${diffDays} días conociéndonos`;
+    }
 }
 
 // Quote Generator
@@ -218,6 +260,14 @@ let isPlaying = false;
 musicBtn.addEventListener('click', toggleMusic);
 
 function toggleMusic() {
+    // Toggle volume control visibility
+    if (volumeControl.style.display === 'none' || !volumeControl.style.display) {
+        volumeControl.style.display = 'block';
+    } else {
+        volumeControl.style.display = 'none';
+    }
+
+    // Toggle play/pause
     if (isPlaying) {
         audioPlayer.pause();
         musicIcon.textContent = '🔇';
@@ -228,7 +278,139 @@ function toggleMusic() {
     isPlaying = !isPlaying;
 }
 
+// Smooth Scroll Animations
+const cards = document.querySelectorAll('.card');
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const cardObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, observerOptions);
+
+cards.forEach(card => cardObserver.observe(card));
+
+// Share Quote Button
+let currentQuote = '';
+
+generateBtn.addEventListener('click', () => {
+    if (quoteText.textContent !== '"Presiona el botón para una notita..."') {
+        shareBtn.style.display = 'inline-block';
+        currentQuote = quoteText.textContent;
+    }
+});
+
+shareBtn.addEventListener('click', async () => {
+    try {
+        await navigator.clipboard.writeText(currentQuote.replace(/^"|"$/g, ''));
+        const originalText = shareBtn.textContent;
+        shareBtn.textContent = '✓ ¡Copiado!';
+        shareBtn.style.background = 'var(--accent-day)';
+        shareBtn.style.color = 'white';
+        setTimeout(() => {
+            shareBtn.textContent = originalText;
+            shareBtn.style.background = '';
+            shareBtn.style.color = '';
+        }, 2000);
+    } catch (err) {
+        console.log('Failed to copy:', err);
+    }
+});
+
+// Bear Click Reaction
+bearContainer.addEventListener('click', () => {
+    bearContainer.classList.add('clicked');
+    // Create heart burst
+    for (let i = 0; i < 8; i++) {
+        const rect = bearContainer.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        setTimeout(() => createFloatingHeart(x, y), i * 50);
+    }
+    setTimeout(() => {
+        bearContainer.classList.remove('clicked');
+    }, 600);
+});
+
+// Night Mode Toggle
+let manualNightMode = null;
+
+nightModeToggle.addEventListener('click', () => {
+    const isNightMode = body.classList.contains('night-mode');
+
+    if (isNightMode) {
+        body.classList.remove('night-mode');
+        nightModeToggle.textContent = '🌙';
+        manualNightMode = false;
+    } else {
+        body.classList.add('night-mode');
+        nightModeToggle.textContent = '☀️';
+        generateStars();
+        manualNightMode = true;
+    }
+});
+
+// Volume Slider Control
+volumeSlider.addEventListener('input', (e) => {
+    const volume = e.target.value / 100;
+    audioPlayer.volume = volume;
+
+    // Update slider gradient
+    const percent = e.target.value;
+    e.target.style.background = `linear-gradient(to right, var(--accent-day) 0%, var(--accent-day) ${percent}%, #ddd ${percent}%, #ddd 100%)`;
+});
+
+// Simple Autoplay Logic
+window.addEventListener('load', () => {
+    // Try to play muted first
+    audioPlayer.muted = true;
+    audioPlayer.play().then(() => {
+        console.log('Autoplay successful (muted)');
+        // Show indicator to unmute
+        autoplayIndicator.style.display = 'block';
+
+        // Hide indicator when user clicks music button
+        musicBtn.addEventListener('click', () => {
+            audioPlayer.muted = false;
+            audioPlayer.volume = 0.5;
+            volumeSlider.value = 50;
+            autoplayIndicator.style.display = 'none';
+        }, { once: true });
+
+    }).catch(() => {
+        console.log('Autoplay blocked - showing indicator');
+        autoplayIndicator.style.display = 'block';
+
+        // Make indicator clickable
+        autoplayIndicator.addEventListener('click', () => {
+            audioPlayer.play().catch(e => console.log('Play failed:', e));
+            audioPlayer.muted = false;
+            audioPlayer.volume = 0.5;
+            volumeSlider.value = 50;
+            isPlaying = true;
+            musicIcon.textContent = '🔊';
+            autoplayIndicator.style.display = 'none';
+        }, { once: true });
+    });
+});
+
+// Update theme function to respect manual override
+const originalUpdateTheme = updateTheme;
+updateTheme = function() {
+    if (manualNightMode === null) {
+        originalUpdateTheme();
+    }
+    // If manual mode is set, don't auto-change
+};
+
 // Initialize
 updateTheme();
+updateDayCounter();
 setInterval(updateTheme, 60000);
+setInterval(updateDayCounter, 3600000); // Update every hour
 

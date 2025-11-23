@@ -42,6 +42,7 @@ body {
     min-height: 100vh;
     opacity: 0;
     animation: fadeIn 1.5s ease-out forwards;
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><text y="20" font-size="20">❤️</text></svg>') 12 12, auto;
 }
 
 @keyframes fadeIn {
@@ -102,6 +103,18 @@ body.night-mode .highlight-name {
     font-weight: 400;
 }
 
+.day-counter {
+    font-size: 0.9rem;
+    margin-top: 12px;
+    color: var(--accent-day);
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+body.night-mode .day-counter {
+    color: var(--accent-night);
+}
+
 /* Cards */
 .card {
     background: var(--card-bg-day);
@@ -111,7 +124,14 @@ body.night-mode .highlight-name {
     border-radius: 24px;
     padding: 25px;
     width: 100%;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.6s ease;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.card.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 body.night-mode .card {
@@ -175,6 +195,12 @@ body.night-mode .card {
     height: 240px;
     position: relative;
     margin: 10px 0;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.bear-container:hover {
+    transform: scale(1.05);
 }
 
 .bear {
@@ -182,6 +208,26 @@ body.night-mode .card {
     height: 100%;
     filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.15));
     /* Soft glow/shadow */
+    transition: transform 0.3s ease;
+}
+
+.bear-container.clicked .bear {
+    animation: bearBounce 0.6s ease;
+}
+
+@keyframes bearBounce {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+    }
+    25% {
+        transform: scale(1.1) rotate(-5deg);
+    }
+    50% {
+        transform: scale(0.9) rotate(5deg);
+    }
+    75% {
+        transform: scale(1.05) rotate(-3deg);
+    }
 }
 
 /* Quote Section */
@@ -219,6 +265,27 @@ body.night-mode .card {
 
 .btn:active {
     transform: scale(0.96);
+}
+
+.quote-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.btn-share {
+    background: rgba(255, 126, 179, 0.2);
+    color: var(--text-day);
+    border: 2px solid var(--accent-day);
+    font-size: 0.9rem;
+    padding: 10px 20px;
+}
+
+.btn-share:hover {
+    background: var(--accent-day);
+    color: white;
 }
 
 .quote-history {
@@ -283,6 +350,147 @@ footer {
 
 .music-btn:active {
     transform: scale(0.95);
+}
+
+/* Volume Control */
+.volume-control {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 9998;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(255, 126, 179, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.volume-slider {
+    width: 150px;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: linear-gradient(to right, var(--accent-day) 0%, var(--accent-day) 50%, #ddd 50%, #ddd 100%);
+    border-radius: 5px;
+    outline: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--accent-day);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(255, 126, 179, 0.5);
+}
+
+.volume-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--accent-day);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(255, 126, 179, 0.5);
+    border: none;
+}
+
+/* Night Mode Toggle */
+.night-mode-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 9998;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(255, 126, 179, 0.3);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.5rem;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(255, 126, 179, 0.3);
+}
+
+.night-mode-toggle:hover {
+    background: white;
+    transform: scale(1.15);
+    box-shadow: 0 6px 20px rgba(255, 126, 179, 0.5);
+}
+
+.night-mode-toggle:active {
+    transform: scale(0.95);
+}
+
+/* Autoplay Indicator */
+.autoplay-indicator {
+    position: fixed;
+    top: 100px;
+    right: 30px;
+    z-index: 10000;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(255, 126, 179, 0.4);
+    border: 2px solid var(--accent-day);
+    animation: slideInRight 0.5s ease-out;
+}
+
+.indicator-content {
+    text-align: center;
+}
+
+.pulsing-music {
+    font-size: 2.5rem;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
+}
+
+.bouncing-arrow {
+    font-size: 2rem;
+    animation: bounce 1s infinite;
+    color: var(--accent-day);
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(10px);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.autoplay-indicator p {
+    margin: 10px 0;
+    font-weight: 600;
+    color: var(--text-day);
 }
 
 /* Background Elements */
